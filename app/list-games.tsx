@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "./context/auth-provider";
+// import { useAuth } from "./context/auth-provider";
 import Link from "next/link";
 import LoadingScreen from "./components/loading-screen";
 
 export default function ListGames() {
   const [games, setGames] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
 
   useEffect(() => {
     const cargarJuegos = async () => {

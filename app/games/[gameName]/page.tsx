@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import ProtectedRoute from "../../components/protected-route";
-import { useAuth } from "../../context/auth-provider";
 import LoadingScreen from "@/app/components/loading-screen";
 
 // Componente para mostrar el juego a través de un iframe
