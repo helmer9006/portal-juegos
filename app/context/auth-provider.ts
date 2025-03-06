@@ -19,7 +19,6 @@ interface AuthContextType {
     login: (redirectPath?: string) => Promise<void>;
     logout: () => Promise<void>;
     acquireToken: () => Promise<string | null>;
-    isInteractionInProgress: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
     isLoading: boolean;
 }
@@ -38,7 +37,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(true); // 🆕 Manejo de carga
-    const [isInteractionInProgress, setIsInteractionInProgress] = useState(false);
 
     // 🆕 useEffect para inicializar MSAL y manejar eventos
     useEffect(() => {
@@ -215,7 +213,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         login,
         logout,
         acquireToken,
-        isInteractionInProgress,
         setIsAuthenticated,
         isLoading
     };

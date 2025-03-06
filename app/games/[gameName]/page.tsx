@@ -12,7 +12,6 @@ function GameFrame() {
   const gameName = params.gameName as string;
   const [playExist, setPlayExist] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const { logout } = useAuth();
 
   // Verificar si el juego existe
   useEffect(() => {
