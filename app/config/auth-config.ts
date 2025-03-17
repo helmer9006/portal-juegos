@@ -3,11 +3,11 @@ import { Configuration, LogLevel } from "@azure/msal-browser";
 // Configuración de MSAL
 export const msalConfig: Configuration = {
     auth: {
-        clientId: "be18d53c-d696-4ef4-a97c-8b0e87923f7c", // Reemplaza con tu Client ID
-        authority: "https://fundaciongruposocial1B2Cpoc.b2clogin.com/fundaciongruposocial1B2Cpoc.onmicrosoft.com/B2C_1_sales-qa-signin",
-        knownAuthorities: ["https://fundaciongruposocial1B2Cpoc.b2clogin.com"], // Dominio de tu tenant
-        redirectUri: "http://localhost:3000",
-        postLogoutRedirectUri: "http://localhost:3000/",
+        clientId: process.env.CLIENT_ID ?? '', // Reemplaza con tu Client ID
+        authority: process.env.AUTHORITY,
+        knownAuthorities: [process.env.KNOWN_AUTHORITIES ?? ''], // Dominio de tu tenant
+        redirectUri: process.env.REDIRECT_URI,
+        postLogoutRedirectUri: process.env.REDIRECT_URI,
         navigateToLoginRequestUrl: true // Importante: deshabilitar navegación automática
     },
     cache: {

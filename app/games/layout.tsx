@@ -5,5 +5,5 @@ interface GamesLayoutProps {
 }
 
 export default function GamesLayout({ children }: GamesLayoutProps) {
-  return <div className="games-container">{children}</div>;
+  return <div>{children}</div>;
 }

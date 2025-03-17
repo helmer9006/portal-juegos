@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  portal_juegos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ENVIRONMENT: production
+    container_name: portal_juegos
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
