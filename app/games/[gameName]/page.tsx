@@ -54,8 +54,18 @@ function GameFrame() {
   return (
     <div className="h-screen flex flex-col">
       <div className="flex-1">
-        <iframe
+        {/* <iframe
           src={`/games-files/${gameName}/index.html`}
+          title={`Juego ${gameName}`}
+          className="w-full h-full border-none"
+        /> */}
+        {/* <iframe
+          src={`/api/games-content?gameName=${gameName}&file=html/index.html`}
+          title={`Juego ${gameName}`}
+          className="w-full h-full border-none"
+        /> */}
+        <iframe
+          src={`/api/games-content?gameName=${gameName}&file=html/index.html`}
           title={`Juego ${gameName}`}
           className="w-full h-full border-none"
         />

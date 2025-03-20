@@ -1,32 +1,56 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { XMLParser } from 'fast-xml-parser';
 
 interface ResponseData {
-    games?: string[];
+    games?: IGames[];
     error?: string;
 }
-
+interface IGames {
+    game: string;
+    description: string;
+}
 export async function GET(): Promise<NextResponse<ResponseData>> {
     try {
-        const routeGames = path.join(process.cwd(), 'public', 'games-files');
-
-        // Verificar si el directorio existe
-        if (!fs.existsSync(routeGames)) {
-            return NextResponse.json({ games: [] });
+        debugger;
+        const storageUrl = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}$web`;
+        const sasToken = process.env.NEXT_PUBLIC_STORAGE_SAS_TOKEN;
+        const url = `${storageUrl}?restype=container&comp=list&${sasToken}`;
+        const response = await fetch(url);
+        const xml = await response.text();
+        if (!response.ok) {
+            console.error('Error al acceder al blob:', xml);
+            return NextResponse.json({ error: 'Error al listar los juegos disponibles' }, { status: 500 });
         }
 
-        // Leer directorios dentro de la carpeta de juegos
-        const directories = fs.readdirSync(routeGames, { withFileTypes: true })
-            .filter(dirent => dirent.isDirectory())
-            .filter(dirent => {
-                // Verificar que cada directorio tenga un archivo index.html
-                const indexPath = path.join(routeGames, dirent.name, 'index.html');
-                return fs.existsSync(indexPath);
-            })
-            .map(dirent => dirent.name);
+        // Parsear el XML
+        const parser = new XMLParser();
+        const parsed = parser.parse(xml);
 
-        return NextResponse.json({ games: directories });
+        // Sacar todos los blobs
+        const blobs = parsed?.EnumerationResults?.Blobs?.Blob || [];
+
+        const gameSet = new Set<string>();
+
+        // Soporta si viene un solo blob o varios
+        const blobArray = Array.isArray(blobs) ? blobs : [blobs];
+
+        blobArray.forEach((blob: any) => {
+            const blobName: string = blob?.Name;
+            // Buscar los index.html de cada juego
+            const match = blobName.match(/^([^/]+)\/html\/index\.html$/);
+            if (match) {
+                gameSet.add(match[1]);
+            }
+        });
+
+        const gamesString = Array.from(gameSet);
+        const games = gamesString.map((game) => {
+            return {
+                game: game,
+                description: game.replace(/_/g, ' ')
+            };
+        });
+        return NextResponse.json({ games });
     } catch (error) {
         console.error('Error al listar juegos:', error);
         return NextResponse.json({ error: 'Error al listar los juegos disponibles' }, { status: 500 });

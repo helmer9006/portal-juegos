@@ -104,9 +104,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }, [isAuthenticated]);
 
     const login = async (redirectPath?: string): Promise<void> => {
-        debugger;
         console.warn("Iniciando login...");
-
         if (!isInitialized || isLoading) {
             console.log("MSAL no inicializado o cargando, abortando login...");
             return;
@@ -149,7 +147,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Función corregida para verificar si el token ha expirado
     const isSessionExpired = async (): Promise<boolean> => {
-        debugger;
         const account = msalInstance.getActiveAccount();
         if (!account) return true; // No hay cuenta activa, sesión expirada.
 
@@ -158,12 +155,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 ...loginRequest,
                 account: account
             });
-            console.warn("response", response)
             const idTokenClaims = response.idTokenClaims as { exp?: number } | undefined;
             if (!idTokenClaims?.exp) return true; // No hay información de expiración.
 
             const now = Math.floor(Date.now() / 1000);
-            console.warn("idTokenClaims.exp < now", idTokenClaims.exp < now);
             return idTokenClaims.exp < now; // Sesión expirada si exp < ahora.
         } catch (error) {
             console.warn("Error obteniendo token en isSessionExpired:", error);
@@ -173,13 +168,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
     const acquireToken = async (): Promise<string | null> => {
-        debugger;
         if (!msalInstance || !account) return null;
 
         // 🆕 Verificar si la sesión está expirada antes de adquirir un token
         const sessionExpired = await isSessionExpired();
         if (sessionExpired) {
-            console.log("Sesión expirada, redireccionando a login...");
+            console.warn("Sesión expirada, redireccionando a login...");
             await login(); // Redirigir a login si la sesión está expirada
             return null;
         }
@@ -189,7 +183,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 ...loginRequest,
                 account: account
             });
-            return response.accessToken;
+            return response.accessToken ? response.accessToken : response.idToken;
         } catch (error) {
             if (error instanceof InteractionRequiredAuthError) {
                 try {

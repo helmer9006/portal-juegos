@@ -1,32 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
-interface ResponseData {
-    exist?: boolean;
-    error?: string;
-}
-
-export async function GET(request: NextRequest): Promise<NextResponse<ResponseData>> {
+export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const gameName = searchParams.get('gameName');
     if (!gameName) {
         return NextResponse.json({ error: 'Se requiere el nombre del juego' }, { status: 400 });
     }
 
-    // Sanear el nombre de juego para evitar recorrido de directorios
-    const gameFolder = gameName.replace(/[^a-zA-Z0-9-_]/g, '');
+    const sanitizedGameName = gameName.replace(/[^a-zA-Z0-9-_]/g, '');
 
-    // Verificar si la carpeta del juego existe en el directorio público
-    const pathGame = path.join(process.cwd(), 'public', 'games-files', gameFolder);
+    const blobUrl = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}$web/${sanitizedGameName}/html/index.html?sp=racwdli&st=2025-03-18T22:01:06Z&se=2025-04-30T06:01:06Z&spr=https&sv=2024-11-04&sr=c&sig=8ahos6KXXYfLSAa7Ks7LD4%2BqkLfT84DXNmHQ72uCm3k%3D`;
 
     try {
-        const exist = fs.existsSync(pathGame) &&
-            fs.existsSync(path.join(pathGame, 'index.html'));
-
-        return NextResponse.json({ exist });
+        const blobResponse = await fetch(blobUrl, { method: 'HEAD' });
+        return NextResponse.json({ exist: blobResponse.ok });
     } catch (error) {
-        console.error('Error al verificar juego:', error);
+        console.error('Error verificando juego:', error);
         return NextResponse.json({ error: 'Error al verificar el juego' }, { status: 500 });
     }
 }
