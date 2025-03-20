@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import LoadingScreen from "./components/loading-screen";
-
+import MyTextInput from "./components/TextInput";
+import { HiEye } from "react-icons/hi";
 interface IGames {
   game: string;
   description: string;
@@ -38,27 +39,22 @@ export default function ListGames() {
 
   return (
     <div className="flex flex-col items-start min-h-screen bg-gray-100 p-6">
-      {/* Google Material Icons */}
-      <link
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        rel="stylesheet"
-      />
-
-      {/* Buscador */}
+      {/* Buscador con tu componente */}
       <div className="w-full max-w-7xl mb-6">
-        <input
-          type="text"
+        <MyTextInput
+          name="search"
           placeholder="Buscar juego..."
-          className="w-full p-3 border rounded-lg shadow-sm"
+          label=""
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          searchicon
         />
       </div>
 
       {/* Tabla */}
       <div className="relative overflow-x-auto w-full max-w-7xl bg-white rounded-lg shadow-lg">
         <table className="w-full text-sm text-left text-gray-700">
-          <thead className="text-xs uppercase bg-cyan-600 text-white">
+          <thead className="text-xs uppercase bg-primary-colmena text-white">
             <tr>
               <th className="px-6 py-4 font-bold text-left">
                 Nombre del Juego
@@ -82,9 +78,7 @@ export default function ListGames() {
                         className="p-2 bg-amber-400 text-white rounded-lg hover:bg-amber-500 transition cursor-pointer"
                         title="Ver juego"
                       >
-                        <span className="material-icons align-middle">
-                          visibility
-                        </span>
+                        <HiEye size={20} />
                       </button>
                     </Link>
                   </td>
