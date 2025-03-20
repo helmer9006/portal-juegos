@@ -3,7 +3,7 @@ import { AuthProvider } from "./context/auth-provider";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 export const metadata: Metadata = {
-  title: "Portal de Juegos",
+  title: "Portal Juegos",
   description: "Portal de juegos con autenticación B2C",
 };
 
@@ -15,10 +15,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="es">
       <head>
-        <meta name="application-name" content="Portal de Juegos" />
+        <meta name="application-name" content="Portal Juegos" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Portal de Juegos" />
+        <meta name="apple-mobile-web-app-title" content="Portal Juegos" />
         <meta
           name="description"
           content="Este es el Portal de Juegos de Colmena Seguros"
