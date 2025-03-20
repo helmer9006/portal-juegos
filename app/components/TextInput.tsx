@@ -8,7 +8,7 @@ interface Props {
   name: string;
   type?: "text" | "email" | "password" | "search" | "number" | "tel";
   placeholder?: string;
-  value?: any;
+  value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   error?: string;

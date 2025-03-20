@@ -9,6 +9,9 @@ interface IGames {
     game: string;
     description: string;
 }
+interface IBlob {
+    Name: string;
+}
 export async function GET(): Promise<NextResponse<ResponseData>> {
     try {
         debugger;
@@ -34,7 +37,7 @@ export async function GET(): Promise<NextResponse<ResponseData>> {
         // Soporta si viene un solo blob o varios
         const blobArray = Array.isArray(blobs) ? blobs : [blobs];
 
-        blobArray.forEach((blob: any) => {
+        blobArray.forEach((blob: IBlob) => {
             const blobName: string = blob?.Name;
             // Buscar los index.html de cada juego
             const match = blobName.match(/^([^/]+)\/html\/index\.html$/);

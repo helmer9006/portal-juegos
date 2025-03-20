@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const gameName = searchParams.get('gameName');
-    let file = searchParams.get('file') || 'html/index.html';
+    const file = searchParams.get('file') || 'html/index.html';
 
     if (!gameName) {
         return NextResponse.json({ error: 'Se requiere el nombre del juego' }, { status: 400 });

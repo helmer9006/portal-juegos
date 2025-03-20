@@ -33,13 +33,6 @@ const customTheme: CustomFlowbiteTheme = {
 };
 
 const NavBar: React.FC = () => {
-  let user: any;
-  const userCookie: any =
-    typeof localStorage !== "undefined" && localStorage.getItem("user");
-  if (userCookie) {
-    user = JSON.parse(userCookie);
-  }
-
   return (
     <Flowbite theme={{ theme: customTheme }}>
       <Navbar
