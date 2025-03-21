@@ -14,15 +14,11 @@ interface IBlob {
 }
 export async function GET(): Promise<NextResponse<ResponseData>> {
     try {
-        debugger;
         const storageUrl = `${process.env.NEXT_PUBLIC_STORAGE_BASE_URL}$web`;
         const sasToken = process.env.NEXT_PUBLIC_STORAGE_SAS_TOKEN;
-        console.log("storageUrl", storageUrl)
-        console.log("sasToken", sasToken)
         const url = `${storageUrl}?restype=container&comp=list&${sasToken}`;
         const response = await fetch(url);
         const xml = await response.text();
-        console.log("xml", xml)
         if (!response.ok) {
             console.error('Error al acceder al blob:', JSON.stringify(xml));
             return NextResponse.json({ error: 'Error al listar los juegos disponibles' }, { status: 500 });
